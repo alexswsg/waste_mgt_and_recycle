@@ -165,4 +165,3 @@ cython_debug/
 # Streamlit
 .streamlit/
 db/*/*.bin
-chroma.sqlite3
