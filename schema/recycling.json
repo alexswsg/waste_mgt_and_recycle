@@ -1,0 +1,23 @@
+{
+  "table_name": "recycling_waste",
+  "columns": [
+    {
+      "name": "year",
+      "data_type": "INTEGER",
+      "description": "Year when the data was collected",
+      "constraints": "CHECK (year >= 2000 AND year <= 2015)"
+    },
+    {
+      "name": "waste_type",
+      "data_type": "TEXT",
+      "description": "Type of recycling waste",
+      "constraints": "CHECK (waste_type IN ('Construction Debris', 'Used Slag', 'Ferrous Metal', 'Scrap Tyres', 'Non-Ferrous Metal', 'Wood', 'Paper/Cardboard', 'Horticultural Waste', 'Plastics', 'Glass', 'Food', 'Textiles', 'Ash and Sludge', 'Others'))"
+    },
+    {
+      "name": "recycling_rate",
+      "data_type": "NUMERIC",
+      "description": "Value from 0 to 100 representing the recycling rate percentage",
+      "constraints": "CHECK (recycling_rate >= 0 AND recycling_rate <= 100)"
+    }
+  ]
+}
