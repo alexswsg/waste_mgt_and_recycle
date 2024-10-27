@@ -78,6 +78,7 @@ def check_for_malicious_intent(user_message):
     ]
 
     response = get_completion_from_messages(messages, max_tokens=1)
+    print(f"response=")
     result = response.choices[0].message.content
     if result.lower() == "yes":
         st.warning("Apologies! I’m afraid I can’t help with that 😔 but feel free to ask anything else about waste management or recycling practices? 😊")
