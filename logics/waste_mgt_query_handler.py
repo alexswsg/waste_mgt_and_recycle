@@ -58,7 +58,7 @@ def process_user_query(user_query):
         3. Provide the identified focus to the Waste Management Researcher to aid targeted research.""",
         expected_output="A summary of the key focus identified in the user query.",
         agent=agent_query_analyzer,
-        async_execution=True
+        # async_execution=True
     )
 
     task_research = Task(
@@ -69,7 +69,7 @@ def process_user_query(user_query):
         expected_output="A concise research summary with Singapore-specific data and guidelines.",
         agent=agent_researcher,
         tools=[web_search_tool_nea_waste_mgt, web_search_tool_nea_news, web_search_tool_zero_waste_sg],
-        async_execution=True
+        # async_execution=True
     )
 
     task_generate_response = Task(

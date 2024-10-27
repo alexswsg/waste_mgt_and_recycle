@@ -47,10 +47,16 @@ if __name__ == "__main__":
     if preset_option != "":
         print("preset selected")
         with st.spinner("Just a moment, please...."):
-            process_user_query(preset_option)
+            print(f"{preset_option=}")
+            result = process_user_query(preset_option)
+            print(f"{result=}")
+            st.write(result.raw)
     elif submit_button:
         print("user input query")
         check_for_malicious_intent(user_input)
         with st.spinner("Just a moment, please...."):
-            st.write(process_user_query(user_input))
+            print(f"{user_input=}")
+            result = process_user_query(user_input)
+            print(f"{result=}")
+            st.write(result.raw)
         
