@@ -35,7 +35,7 @@ nlp_agent = Agent(
         "You are skilled at understanding and interpreting natural language queries about recycling data to align them with schema constraints. "
         "Your goal is to extract the relevant information needed to form a SQL query."
     ),
-    max_iter=10,
+    max_iter=5,
 )
 
 # SQL Generator Agent
@@ -53,7 +53,7 @@ sql_agent = Agent(
         "You are an expert in SQL query formation, particularly for recycling data analysis."
         "Your goal is to generate accurate and optimized SQL queries based on structured data that comply with schema constraints."
     ),
-    max_iter=10,
+    max_iter=5,
 )
 
 # Task for interpreting natural language
@@ -83,39 +83,46 @@ generate_sql_task = Task(
     agent=sql_agent,
 )
 
-# Define the manager agent
-recycling_data_manager = Agent(
-    role="Recycling Data Analysis Manager",
-    goal="""Oversee the process of interpreting natural language queries about recycling data, 
-            generating SQL queries, and analysing the results.
-            Your final response should include the SQL query and a summary of the recycling trends analysis.""",
-    verbose=False,
-    memory=True,
-    backstory=(
-        "You are an experienced manager with expertise in recycling data analysis. "
-        "Your goal is to coordinate the process of transforming user queries into actionable insights about recycling trends."
-    ),
-    allow_delegation=True,
-    llm=manager_llm,
-    max_iter=10,
-)
 
-# Creating the crew with all agents and tasks
-recycling_analysis_crew = Crew(
-    agents=[nlp_agent, sql_agent],
-    tasks=[interpret_nl_task, generate_sql_task],
-    manager_agent=recycling_data_manager,
-    process=Process.hierarchical,
-    manager_llm=manager_llm,
-)
-
+    
 # Function to run the crew with a user query
 def analyse_recycling_data(user_query, n_rows=50):
+
+    # Define the manager agent
+    recycling_data_manager = Agent(
+        role="Recycling Data Analysis Manager",
+        goal="""Oversee the process of interpreting natural language queries about recycling data, 
+                generating SQL queries, and analysing the results.
+                Your final response should include the SQL query and a summary of the recycling trends analysis.""",
+        verbose=False,
+        memory=True,
+        backstory=(
+            "You are an experienced manager with expertise in recycling data analysis. "
+            "Your goal is to coordinate the process of transforming user queries into actionable insights about recycling trends."
+        ),
+        allow_delegation=True,
+        llm=manager_llm,
+        tools=[],
+        max_iter=5,
+    )
+    
+    # Creating the crew with all agents and tasks
+    recycling_analysis_crew = Crew(
+        agents=[nlp_agent, sql_agent],
+        tasks=[interpret_nl_task, generate_sql_task],
+        manager_agent=recycling_data_manager,
+        process=Process.hierarchical,
+        manager_llm=manager_llm,
+    )
+
+
     input_data = {
         'user_query': user_query,
         'schema_info': schema_info,
         'n_rows': n_rows
     }
+    print(20*"#")
+    print(f"{recycling_data_manager.tools=}")
     result = recycling_analysis_crew.kickoff(inputs=input_data)
     return result
 
